@@ -4,17 +4,22 @@ import cultivos.*
 
 class Aspersor {
     var property image = "aspersor.png"
-    var property position = null  
-    var property direcciones = [
-        game.at(position.x(), position.y() + 1),
-        game.at(position.x() + 1, position.y() + 1),
-        game.at(position.x() + 1, position.y()),
-        game.at(position.x() + 1, position.y() - 1),
-        game.at(position.x(), position.y() - 1),
-        game.at(position.x() - 1, position.y() - 1),
-        game.at(position.x() - 1, position.y()),
-        game.at(position.x() - 1, position.y() + 1)
-    ]
+    var property position
+    var property direcciones = []
+
+    method initialize() {
+        self.direcciones([
+            game.at(position.x(), position.y() + 1),
+            game.at(position.x() + 1, position.y() + 1),
+            game.at(position.x() + 1, position.y()),
+            game.at(position.x() + 1, position.y() - 1),
+            game.at(position.x(), position.y() - 1),
+            game.at(position.x() - 1, position.y() - 1),
+            game.at(position.x() - 1, position.y()),
+            game.at(position.x() - 1, position.y() + 1)
+        ])
+    }
+    
 
     method regarCultivos() {
         const posicionIncial = position
