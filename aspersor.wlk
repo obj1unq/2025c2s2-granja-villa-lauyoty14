@@ -47,4 +47,8 @@ class Aspersor {
         cultivosEnMiPosition.remove(personaje)
 		return not cultivosEnMiPosition.isEmpty()
 	}
+
+    method regarme() {
+      
+    }
 }
