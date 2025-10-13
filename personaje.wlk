@@ -1,23 +1,40 @@
 import wollok.vm.*
 import cultivos.*
 import wollok.game.*
+import aspersor.*
+
 
 object personaje {
 	var property position = game.center()
 	const property image = "fplayer.png"
-	const property cosechas = []
 	const cultivos = []
+	var property cosechas = []
+	var property dinero = 0 
+	const property aspersores = []
 
-	method dineroDeVenta() {
-		var dinero = 0
-		cosechas.forEach({cosecha => dinero += cosecha.valor()})
-		return dinero
+	method activarAspersores() {
+	  aspersores.forEach({aspersor => aspersor.regarCultivos()})
 	}
 
-	method text() = self.plantasParaVender()
+	method añadirAspersor() {
+		const nuevoAspersor = new Aspersor(position = self.position()) 
+		aspersores.add(nuevoAspersor)
+		game.addVisual(nuevoAspersor)
+	}
+
+	method dineroDeVenta() {
+		var dineroDeVenta = 0
+		cosechas.forEach({cosecha => dineroDeVenta += cosecha.valor()})
+		return dineroDeVenta
+	}
 
 	method plantasParaVender() {
-		return "tengo" + self.dineroDeVenta() + ", y" + cosechas.length() + "para vender"
+		game.say(self, "tengo " + self.dineroDeVenta() + ", y " + cosechas.size() + " para vender")
+	} 
+
+	method vender() {
+		dinero += self.dineroDeVenta()
+		self.cosechas([])
 	}
 
 	method cosechar() {
