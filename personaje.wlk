@@ -2,7 +2,7 @@ import wollok.vm.*
 import cultivos.*
 import wollok.game.*
 import aspersor.*
-
+import mercados.*
 
 object personaje {
 	var property position = game.center()
@@ -33,15 +33,19 @@ object personaje {
 	} 
 
 	method vender() {
-		dinero += self.dineroDeVenta()
-		self.cosechas([])
+		const mercado = mercaditos.findOrElse({mercado => mercado.hayAlguienAca()}, {self.error("no hay un mercado aca")} )
+		if(mercado.monedas() >= self.dineroDeVenta()){
+			mercado.comprar(cosechas, self.dineroDeVenta())
+			dinero += self.dineroDeVenta()
+			self.cosechas([])
+		}
 	}
 
 	method cosechar() {
 		self.validarCosechar()
 		self.plantaActual().cosecharPor(self)
 	}
-
+	
 	method validarCosechar() {
 		if(not self.hayPlantaAca()){
 			self.error("no hay una planta para cosechar en la celda actual")
