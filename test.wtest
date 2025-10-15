@@ -1,5 +1,76 @@
-describe "test" {
-  test "description" {
-    
+import cultivos.*
+import aspersor.*
+import personaje.*
+import mercados.*
+
+describe "test granja villa" {
+  test "no puede plantar 2 plantas en la misma celda" {
+    personaje.sembrarMaiz()
+    assert.throwsException({ personaje.sembrarMaiz() })
+    assert.throwsException({ personaje.sembrarTomaco() })
+    assert.throwsException({ personaje.sembrarTrigo() })
+  }
+
+  test "no puede regar si no hay planta" {
+    assert.throwsException({ personaje.regar() })
+  }
+
+  test "no puede cosechar si no hay planta en la celda actual" {
+    assert.throwsException({personaje.cosechar()})
+  }
+
+  test "no puede vender si no esta en un mercado" {
+    assert.throwsException({ personaje.vender() })
+  }
+
+  test "los aspersores riegan todas las plantas aunque el personaje este encima de una" {
+    personaje.añadirAspersor()
+    personaje.position(personaje.position().up(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().right(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().down(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().down(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().left(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().left(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().up(1))
+    personaje.sembrarTrigo()
+    personaje.position(personaje.position().up(1))
+    personaje.sembrarTrigo()
+    personaje.activarAspersores()
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().right(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().right(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().down(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().down(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().left(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().left(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+    personaje.position(personaje.position().up(1))
+    assert.that(personaje.plantaActual().etapa() == 1)
+  }
+
+  test "sembre maiz" {
+    personaje.sembrarMaiz()
+    assert.that(personaje.plantaActual().kindName() == "a Maiz")
+  }
+
+  test "sembre trigo" {
+    personaje.sembrarTrigo()
+    assert.that(personaje.plantaActual().kindName() == "a Trigo")  
+  }
+
+  test "sembre tomaco" {
+      personaje.sembrarTomaco()
+      assert.that(personaje.plantaActual().kindName() == "a Tomaco")
   }
 }
