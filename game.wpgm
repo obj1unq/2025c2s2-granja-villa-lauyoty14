@@ -1,6 +1,8 @@
+import aspersor.*
 import wollok.game.*
 import personaje.*
 import cultivos.*
+import mercados.*
 
 program farmville {
 	//  CONFIG	
@@ -10,9 +12,22 @@ program farmville {
 	game.ground("ground.png")
 
 	//  VISUALES
+	mercaditos.forEach({mercado => game.addVisual(mercado)})
  	game.addVisualCharacter(personaje)
- 	game.addVisual(new Maiz()) // Se agrega a modo de prueba
- 	
+
+	// Teclas
+	keyboard.m().onPressDo({personaje.sembrarMaiz()})
+	keyboard.t().onPressDo({personaje.sembrarTrigo()})
+	keyboard.o().onPressDo({personaje.sembrarTomaco()})
+	keyboard.r().onPressDo({personaje.regar()})	
+	keyboard.c().onPressDo({personaje.cosechar()})
+	keyboard.space().onPressDo({personaje.plantasParaVender()})
+ 	keyboard.v().onPressDo({personaje.vender()})
+	keyboard.a().onPressDo({personaje.añadirAspersor()})
+	keyboard.z().onPressDo({game.say(personaje, "tengo " + personaje.dinero())})
+
+	game.onTick(1000, "aspersores regando", {personaje.activarAspersores()})
+	
  	//  COMIENZA
 	game.start()
 }
